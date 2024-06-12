@@ -29,7 +29,7 @@ public class Post {
     private LocalDateTime createDate;
 
     @Builder
-    public Post(Client client, @NonNull String title, @NonNull String contents, LocalDateTime createDate) {
+    public Post(Client client, @NonNull String title, @NonNull String contents) {
         this.client = client;
         this.title = title;
         this.contents = contents;

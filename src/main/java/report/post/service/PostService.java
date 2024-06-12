@@ -25,15 +25,13 @@ public class PostService {
 
     @Transactional
     public Post save(PostingSaveReqDTO postingSaveReqDTO) {
-        //게시글 저장할 때 client 함께 저장
-        Post post = postingSaveReqDTO.toEntity(saveClient(postingSaveReqDTO));
-        return postRepository.save(post);
-    }
 
-    private Client saveClient(PostingSaveReqDTO postingSaveReqDTO) {
+        if (clientRepository.findByName(postingSaveReqDTO.getName()).isPresent()) {
+            throw new IllegalArgumentException("이미 등록된 유저입니다.");
+        }
         Client client = new Client(postingSaveReqDTO.getName(), postingSaveReqDTO.getPassword());
         clientRepository.save(client);
-        return client;
-    }
 
+        return postRepository.save(postingSaveReqDTO.toEntity(client));
+    }
 }

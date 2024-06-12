@@ -19,6 +19,7 @@ public class Client {
     private List<Post> postList = new ArrayList<>();
 
     @NonNull
+    @Column(unique = true)
     private String name;
 
     @NonNull
