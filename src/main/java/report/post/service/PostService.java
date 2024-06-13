@@ -3,11 +3,10 @@ package report.post.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import report.post.domain.Client;
 import report.post.domain.Post;
-import report.post.repository.ClientRepository;
 import report.post.repository.PostRepository;
 import report.post.repository.dto.request.PostSaveReqDTO;
+import report.post.repository.dto.request.PostUpdateReqDTO;
 import report.post.repository.dto.response.PostSelectResDTO;
 
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final ClientRepository clientRepository;
 
     @Transactional
     public List<Post> all() {
@@ -25,21 +23,28 @@ public class PostService {
     }
 
     @Transactional
-    public Post save(PostSaveReqDTO postSaveReqDTO) {
-
-        if (clientRepository.findByName(postSaveReqDTO.getName()).isPresent()) {
-            throw new IllegalArgumentException("이미 등록된 유저입니다.");
-        }
-        Client client = new Client(postSaveReqDTO.getName(), postSaveReqDTO.getPassword());
-        clientRepository.save(client);
-
-        return postRepository.save(postSaveReqDTO.toEntity(client));
+    public Post save(PostSaveReqDTO dto) {
+        return postRepository.save(new Post(dto.getClientName(), dto.getPassword(), dto.getTitle(), dto.getContents()));
     }
 
     @Transactional
     public PostSelectResDTO select(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 게시글이 없습니다."));
-        return new PostSelectResDTO(post.getTitle(), post.getClient().getName(), post.getCreateDate(), post.getContents());
+        return new PostSelectResDTO(post.getTitle(), post.getClientName(), post.getCreateDate(), post.getContents());
+    }
+
+    @Transactional
+    public Post update(Long postId, PostUpdateReqDTO dto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("선택한 게시글이 없습니다."));
+        //비밀번호가 동일한지 검증
+        if (post.getPassword().equals(dto.getPassword())) {
+            //동일한 경우 수정 가능
+            post.setClientName(dto.getClientName());
+            post.setTitle(dto.getTitle());
+            post.setContents(dto.getContents());
+            return post;
+        } else throw new IllegalArgumentException("비밀번호가 틀립니다.");
     }
 }

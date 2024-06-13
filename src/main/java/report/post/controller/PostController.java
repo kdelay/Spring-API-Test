@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import report.post.domain.Post;
 import report.post.repository.dto.request.PostSaveReqDTO;
+import report.post.repository.dto.request.PostUpdateReqDTO;
 import report.post.repository.dto.response.PostSelectResDTO;
 import report.post.service.PostService;
 
@@ -40,5 +41,11 @@ public class PostController {
     @GetMapping("/{postId}")
     public PostSelectResDTO select(@RequestParam Long postId) {
         return postService.select(postId);
+    }
+
+    @Operation(summary = "선택 게시글 수정", description = "선택한 게시글을 수정합니다.")
+    @PutMapping("/{postId}")
+    public Post update(@RequestParam Long postId, @RequestBody PostUpdateReqDTO postUpdateReqDTO) {
+        return postService.update(postId, postUpdateReqDTO);
     }
 }
