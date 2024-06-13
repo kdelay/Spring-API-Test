@@ -39,19 +39,19 @@ public class PostController {
 
     @Operation(summary = "선택 게시글 조회", description = "선택한 게시글을 조회합니다.")
     @GetMapping("/{postId}")
-    public PostSelectResDTO select(@RequestParam Long postId) {
+    public PostSelectResDTO select(@PathVariable Long postId) {
         return postService.select(postId);
     }
 
     @Operation(summary = "선택 게시글 수정", description = "선택한 게시글을 수정합니다.")
     @PatchMapping("/{postId}")
-    public Post update(@RequestParam Long postId, @RequestBody PostUpdateReqDTO postUpdateReqDTO) {
+    public Post update(@PathVariable Long postId, @RequestBody PostUpdateReqDTO postUpdateReqDTO) {
         return postService.update(postId, postUpdateReqDTO);
     }
 
     @Operation(summary = "선택 게시글 삭제", description = "선택한 게시글을 삭제합니다.")
     @DeleteMapping("/{postId}")
-    public String delete(@RequestParam Long postId, String password) {
+    public String delete(@PathVariable Long postId, String password) {
         try {
             return postService.delete(postId, password);
         } catch (IllegalArgumentException e) {
