@@ -47,4 +47,19 @@ public class PostService {
             return post;
         } else throw new IllegalArgumentException("비밀번호가 틀립니다.");
     }
+
+    @Transactional
+    public String delete(Long postId, String password) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("선택한 게시글이 없습니다."));
+        //비밀번호가 동일한지 검증
+        if (post.getPassword().equals(password)) {
+            postRepository.deleteById(postId);
+        } else throw new IllegalArgumentException("비밀번호가 틀립니다.");
+        postRepository.flush();
+
+        if (postRepository.findById(postId).isEmpty()) {
+            return "게시글을 삭제했습니다.";
+        } else return "게시글 삭제 실패";
+    }
 }

@@ -48,4 +48,14 @@ public class PostController {
     public Post update(@RequestParam Long postId, @RequestBody PostUpdateReqDTO postUpdateReqDTO) {
         return postService.update(postId, postUpdateReqDTO);
     }
+
+    @Operation(summary = "선택 게시글 삭제", description = "선택한 게시글을 삭제합니다.")
+    @DeleteMapping("/{postId}")
+    public String delete(@RequestParam Long postId, String password) {
+        try {
+            return postService.delete(postId, password);
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+    }
 }
