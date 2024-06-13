@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @Operation(summary = "선택 게시글 수정", description = "선택한 게시글을 수정합니다.")
-    @PutMapping("/{postId}")
+    @PatchMapping("/{postId}")
     public Post update(@RequestParam Long postId, @RequestBody PostUpdateReqDTO postUpdateReqDTO) {
         return postService.update(postId, postUpdateReqDTO);
     }
