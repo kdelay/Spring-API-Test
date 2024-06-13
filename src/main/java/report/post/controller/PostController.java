@@ -8,7 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import report.post.domain.Post;
-import report.post.repository.dto.PostingSaveReqDTO;
+import report.post.repository.dto.request.PostSaveReqDTO;
+import report.post.repository.dto.response.PostSelectResDTO;
 import report.post.service.PostService;
 
 import java.util.List;
@@ -31,7 +32,13 @@ public class PostController {
 
     @Operation(summary = "게시글 작성", description = "게시글을 작성합니다.")
     @PostMapping
-    public Post save(@RequestBody PostingSaveReqDTO postingSaveReqDTO) {
-        return postService.save(postingSaveReqDTO);
+    public Post save(@RequestBody PostSaveReqDTO postSaveReqDTO) {
+        return postService.save(postSaveReqDTO);
+    }
+
+    @Operation(summary = "선택 게시글 조회", description = "선택한 게시글을 조회합니다.")
+    @GetMapping("/{postId}")
+    public PostSelectResDTO select(@RequestParam Long postId) {
+        return postService.select(postId);
     }
 }
