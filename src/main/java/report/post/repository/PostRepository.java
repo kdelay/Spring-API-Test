@@ -6,5 +6,5 @@ import report.post.domain.Post;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findAllByOrderByCreateDateDesc();
+    List<Post> findAllByOrderByCreateAtDesc();
 }

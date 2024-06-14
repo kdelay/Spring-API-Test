@@ -16,7 +16,7 @@ public class Post {
     private Long id;
 
     @Column(nullable = false)
-    private String clientName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -27,18 +27,24 @@ public class Post {
     @Column(nullable = false)
     private String contents;
 
-    private LocalDateTime createDate;
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
 
-    public Post(String clientName, String password, String title, String contents) {
-        this.clientName = clientName;
+    public Post(String username, String password, String title, String contents) {
+        this.username = username;
         this.password = password;
         this.title = title;
         this.contents = contents;
-        this.createDate = LocalDateTime.now();
+        craeteDate();
     }
 
-    public Post(String clientName, String title, String contents) {
-        this.clientName = clientName;
+    private void craeteDate() {
+        this.createAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    public Post(String username, String title, String contents) {
+        this.username = username;
         this.title = title;
         this.contents = contents;
     }
